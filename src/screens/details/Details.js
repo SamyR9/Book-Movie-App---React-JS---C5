@@ -66,7 +66,7 @@ const Details = (props) => {
 
     return(
         <div>
-            <Header isDetailsPage="true"/>
+            <Header isDetailsPage="true" id={selectedMovie.id}/>
             <div className="backToHome">
                 <Typography>
                     <Link to="/" underline="hover" className="backLink">&lt; Back to Home</Link>

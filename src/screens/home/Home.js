@@ -175,7 +175,7 @@ const Home = (props) => {
             query += "&title=" + movieName;
         }
         if (filterGenres.length > 0) {
-            query += "&genres=" + filterGenres.toString();
+            query += "&genre=" + filterGenres.toString();
         }
         if (filterArtists.length > 0) {
             query += "&artists=" + filterArtists.toString();
@@ -238,10 +238,9 @@ const Home = (props) => {
 
                             <FormControl className={classes.movieFilterCardForm}>
                                 <InputLabel htmlFor="genres-Picklist">Genres</InputLabel>
-                                <Select
-                                    multiple
-                                    input={<Input id="genres-Picklist" />}
-                                    renderValue={selected => selected.join(",")} value={filterGenres} onChange={filterGenresHandler}>
+                                <Select multiple input={<Input id="genres-Picklist" />}
+                                    renderValue={selected => selected.join(",")} 
+                                    value={filterGenres} onChange={filterGenresHandler}>
                                     
                                     {genresPicklist.map(genre => (
                                         <MenuItem key={genre.id} value={genre.genre}>

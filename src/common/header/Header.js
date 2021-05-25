@@ -45,10 +45,6 @@ const Header = (props) =>{
             setSessionState(false);
         }
 
-        // const directToBookShowPage = (id) => {
-        //     props.history.push('/bookshow/' + id);
-        // }
-
         const openPopupModalHandler = () => {
             setOpen(true);
             setUserName("");
@@ -132,7 +128,7 @@ const Header = (props) =>{
             if(username!=null && username!="" && logpassword!=null && logpassword!=""){
                 e.preventDefault();
                 //const loginParameters = window.btoa(username + ":" + password);
-                console.log(window.btoa(logpassword))
+                //console.log(window.btoa(logpassword))
                 
                 fetch(props.baseUrl+"auth/login",{
                     method: "POST",
@@ -149,6 +145,7 @@ const Header = (props) =>{
                         setPassword("");
                         sessionStorage.setItem("access-token",data.id);
                         setLoginSuccess(2);
+                        setSessionState(true);
                     }else{
                         setLoginSuccess(1);
                     }
@@ -200,7 +197,8 @@ const Header = (props) =>{
         return(
             <div className="header">
                 <img src={logo} alt="logo" className="app-logo"/>
-                {(sessionLogged==false) ? <Button className="headerButton" variant="contained" onClick={openPopupModalHandler}>Login</Button>
+                {(sessionLogged===false) ? 
+                    <Button className="headerButton" variant="contained" onClick={openPopupModalHandler}>Login</Button>
                    : <Button className="headerButton" variant="contained" onClick={logoutSessionHandler}>Logout</Button>
                 }
                 
