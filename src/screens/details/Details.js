@@ -31,7 +31,7 @@ const Details = (props) => {
     });
 
     function loadSelectedMovieData(){
-        fetch(props.baseURL + "movies/" + props.match.params.id , {
+        fetch(props.baseUrl + "movies/" + props.match.params.id , {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
@@ -92,7 +92,7 @@ const Details = (props) => {
                         <span className="tagStyle">Release Date:</span> {new Date(selectedMovie.release_date).toDateString()} 
                     </Typography>
                     <Typography>
-                        <span className="tagStyle"> Rating:</span> {selectedMovie.critics_rating}  
+                        <span className="tagStyle"> Rating:</span> {selectedMovie.rating}  
                     </Typography>
                     <div className="marginStyle">
                         <Typography>

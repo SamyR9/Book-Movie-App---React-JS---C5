@@ -7,6 +7,8 @@
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
     "bootstrap": "^5.0.1",
+    "cors": "^2.8.5",
+    "http-proxy-middleware": "^2.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.0",
     "react-dom": "^17.0.2",
@@ -22,17 +24,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "proxy": "http://localhost:8085",
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+  "proxy": "http://localhost:8085"
 }

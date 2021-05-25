@@ -40,7 +40,7 @@ const useStyles = theme => ({
         cursor: 'pointer'
     },
     movieFilterCardForm: {
-        margin: theme.spacing.unit,
+        margin: theme.spacing(1),// theme.spacing.unit deprecated for installed version
         minWidth: 240,
         maxWidth: 240
     },
@@ -51,9 +51,14 @@ const Home = (props) => {
     const [movies,setUpcomingMoviesList] = useState([]);
     const [relMovies, setReleasedMoviesList] = useState([]);
     const [genresPicklist, setGenresPicklist] = useState([]);
-    const [selectedGenres, setSelectedGenres] = useState([]);
     const [artistsPicklist, setArtistsPicklist] = useState([]);
-    const [selectedArtists, setSelectedArtists] = useState([]);
+    
+    //Filter
+    const [movieName, setFilterMovie] =  useState([]);
+    const [filterGenres, setFilterGenres] = useState([]);
+    const [filterArtists, setFilterArtists] = useState([]);
+    const [relStartDate, setFilterStartDate] = useState([]);
+    const [relEndDate, setFilterEndDate] = useState([]);
     
     let dataUpcomingMovies = null;
     let dataReleasedMovies = null;
@@ -61,24 +66,24 @@ const Home = (props) => {
     let dataArtistsPicklist = null;
     let dataFilterBox = null;
 
-    const inputMovieNameHandler = event => {
-        setMovieName(event.target.value);
+    const filterMovieNameHandler = event => {
+        setFilterMovie(event.target.value);
     }
     
-    const selectGenresHandler = event => {
-        setSelectedGenres(event.target.value);
+    const filterGenresHandler = event => {
+        setFilterGenres(event.target.value);
     }
     
-    const selectArtistsHandler = event => {
-        setSelectedArtists(event.target.value);
+    const filterArtistsHandler = event => {
+        setFilterArtists(event.target.value);
     }
     
-    const startDateHandler = event => {
-        setReleaseDateStart( event.target.value);
+    const filterStartDateHandler = event => {
+        setFilterStartDate( event.target.value);
     }
     
-    const endDateHandler = event => {
-        setReleaseDateEnd(event.target.value);
+    const filterEndDateHandler = event => {
+        setFilterEndDate(event.target.value);
     }
     
     const movieCardClickHandler = (movieId) => {
@@ -87,7 +92,7 @@ const Home = (props) => {
     
     function loadMoviesData(){
         //upcoming movies get request 
-        fetch(props.baseURL + "movies?status=PUBLISHED", {
+        fetch(props.baseUrl+ "movies?status=PUBLISHED", {
             method: "GET" ,
             headers: {
                 "Cache-Control" : "no-cache",
@@ -99,7 +104,7 @@ const Home = (props) => {
         });
        
         //released movies get request
-        fetch(props.baseURL + "movies?status=RELEASED", {
+        fetch(props.baseUrl + "movies?status=RELEASED", {
             method: "GET" ,
             headers: {
                 "Cache-Control" : "no-cache",
@@ -113,7 +118,7 @@ const Home = (props) => {
     }
 
     function loadGenres(){
-        fetch(props.baseURL + "genres", {
+        fetch(props.baseUrl + "genres", {
             method: "GET" ,
             headers: {
                 'Cache-Control' : "no-cache",
@@ -129,7 +134,7 @@ const Home = (props) => {
 
     function loadArtists(){
 
-        fetch(props.baseURL + "artists", {
+        fetch(props.baseUrl + "artists", {
             method: "GET" ,
             headers: {
                 "Cache-Control" : "no-cache",
@@ -152,7 +157,7 @@ const Home = (props) => {
     },[])
 
     function loadFilters(query){
-        fetch(props.baseURL +"movies" + encodeURI(query),{
+        fetch(props.baseUrl +"movies" + encodeURI(query),{
             method: "GET",
             headers: {
                 "Cache-Control": "no-cache"
@@ -169,11 +174,11 @@ const Home = (props) => {
         if (movieName !== "") {
             query += "&title=" + movieName;
         }
-        if (selectedGenres.length > 0) {
-            query += "&genres=" + selectedGenres.toString();
+        if (filterGenres.length > 0) {
+            query += "&genres=" + filterGenres.toString();
         }
-        if (selectedArtists.length > 0) {
-            query += "&artists=" + selectedArtists.toString();
+        if (filterArtists.length > 0) {
+            query += "&artists=" + filterArtists.toString();
         }
         if (relStartDate !== "") {
             query += "&start_date=" + relStartDate;
@@ -186,7 +191,8 @@ const Home = (props) => {
     
     return(
         <div>
-            <Header/>
+            
+            <Header baseUrl={props.baseUrl}/>  
             <div className="upMovHeader">Upcoming Movies</div>
             
             {/* upcoming movies grid list - material ui */}
@@ -227,7 +233,7 @@ const Home = (props) => {
 
                             <FormControl className={classes.movieFilterCardForm}>
                                 <InputLabel htmlFor="movieName">Movie Name</InputLabel>
-                                <Input id="movieName" onChange={inputMovieNameHandler}/>
+                                <Input id="movieName" onChange={filterMovieNameHandler}/>
                             </FormControl>
 
                             <FormControl className={classes.movieFilterCardForm}>
@@ -235,11 +241,11 @@ const Home = (props) => {
                                 <Select
                                     multiple
                                     input={<Input id="genres-Picklist" />}
-                                    renderValue={selected => selected.join(",")} value={selectedGenres} onChange={selectGenresHandler}>
+                                    renderValue={selected => selected.join(",")} value={filterGenres} onChange={filterGenresHandler}>
                                     
                                     {genresPicklist.map(genre => (
                                         <MenuItem key={genre.id} value={genre.genre}>
-                                            <Checkbox checked={selectedGenres.indexOf(genre.genre) > -1} />
+                                            <Checkbox checked={filterGenres.indexOf(genre.genre) > -1} />
                                             <ListItemText primary={genre.genre} />
                                         </MenuItem>
                                     ))}
@@ -250,11 +256,11 @@ const Home = (props) => {
                                 <InputLabel htmlFor="selectArtists">Artists</InputLabel>
                                 <Select multiple input={<Input id="selectArtists" />}
                                     renderValue={selected => selected.join(',')}
-                                    value={selectedArtists} onChange={selectArtistsHandler}>
+                                    value={filterArtists} onChange={filterArtistsHandler}>
                                     
                                     {artistsPicklist.map(artist => (
                                         <MenuItem key={artist.id} value={artist.first_name + " " + artist.last_name}>
-                                            <Checkbox checked={selectedArtists.indexOf(artist.first_name + " " + artist.last_name) > -1} />
+                                            <Checkbox checked={filterArtists.indexOf(artist.first_name + " " + artist.last_name) > -1} />
                                             <ListItemText primary={artist.first_name + " " + artist.last_name} />
                                         </MenuItem>
                                     ))}
@@ -263,12 +269,12 @@ const Home = (props) => {
 
                             <FormControl className={classes.movieFilterCardForm}>
                                 <TextField id="relStartDate" label="Release Date Start" type="date" defaultValue="" 
-                                    InputLabelProps={{ shrink: true }} onChange={startDateHandler}/>
+                                    InputLabelProps={{ shrink: true }} onChange={filterStartDateHandler}/>
                             </FormControl>
 
                             <FormControl className={classes.movieFilterCardForm}>
                                 <TextField id="relEndDate" label="Release Date End"type="date" defaultValue=""
-                                    InputLabelProps={{ shrink: true }} onChange={endDateHandler}/>
+                                    InputLabelProps={{ shrink: true }} onChange={filterEndDateHandler}/>
                             </FormControl>
                             <br/>
                             <br/>

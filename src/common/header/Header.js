@@ -1,8 +1,9 @@
 import React,{ useState } from "react";
 import "./Header.css"
 import logo from "../../assets/logo.svg"
-import {Button,Paper,Tabs,Tab,FormControl,InputLabel,Input, FormHelperText} from "@material-ui/core"
+import {Button,Paper,Tabs,Tab,FormControl,InputLabel,Input, FormHelperText, Typography} from "@material-ui/core"
 import Modal from "react-modal"
+import { Link } from "react-router-dom";
 
 const Header = (props) =>{ 
 
@@ -12,7 +13,7 @@ const Header = (props) =>{
 
         //Login 
         const [username, setUserName] = useState([]);
-        const [password, setPassword] = useState([]);
+        const [logpassword, setPassword] = useState([]);
 
         //Register
         const [firstname, setFirstName] = useState([]);
@@ -30,6 +31,9 @@ const Header = (props) =>{
         const [regPasswordReq, setCNameforRegPassword] = useState("noneClass");
         const [contactReq, setCNameforContact] = useState("noneClass");
 
+        const [loginSuccess, setLoginSuccess] = useState([0]);
+        const [registerSuccess, setRegisterSuccess] = useState([0]);
+
         const tabsHandler = (e,val) => {
             //console.warn(val)
             setVal(val);
@@ -41,9 +45,9 @@ const Header = (props) =>{
             setSessionState(false);
         }
 
-        const directToBookShowPage = (id) => {
-            props.history.push('/bookshow/' + id);
-        }
+        // const directToBookShowPage = (id) => {
+        //     props.history.push('/bookshow/' + id);
+        // }
 
         const openPopupModalHandler = () => {
             setOpen(true);
@@ -62,6 +66,9 @@ const Header = (props) =>{
             setCNameforEmail("noneClass");
             setCNameforRegPassword("noneClass");
             setCNameforContact("noneClass");
+
+            setLoginSuccess(0);
+            setRegisterSuccess(0);
 
         }
 
@@ -82,6 +89,9 @@ const Header = (props) =>{
             setCNameforEmail("noneClass");
             setCNameforRegPassword("noneClass");
             setCNameforContact("noneClass");
+
+            setLoginSuccess(0);
+            setRegisterSuccess(0);
         }
 
         const  userNameHandler = (e) => {
@@ -112,18 +122,79 @@ const Header = (props) =>{
             setContact( e.target.value);
         }
 
-        const loginAuthenticationHandler = () => {
+        const loginAuthenticationHandler = (e) => {
+            let dataLog = null;
+            
             username === "" ? setCNameForUname("blockClass") : setCNameForUname("noneClass");
             //console.log(unameReq)
-            password === "" ? setCNameforPassword("blockClass") : setCNameforPassword("noneClass");
+            logpassword === "" ? setCNameforPassword("blockClass") : setCNameforPassword("noneClass");
+
+            if(username!=null && username!="" && logpassword!=null && logpassword!=""){
+                e.preventDefault();
+                //const loginParameters = window.btoa(username + ":" + password);
+                console.log(window.btoa(logpassword))
+                
+                fetch(props.baseUrl+"auth/login",{
+                    method: "POST",
+                    headers: {
+                        Accept: "application/json",
+                        "Content-type": "application/json; charset=UTF-8",
+                        Authorization: "Basic " + window.btoa(username+ ":" +logpassword),
+                        },
+                    body: dataLog,
+                }).then(async(response) => response.json()).then((data) => {
+                    if(!data.message){
+                        closePopupModalHandler();
+                        setUserName("");
+                        setPassword("");
+                        sessionStorage.setItem("access-token",data.id);
+                        setLoginSuccess(2);
+                    }else{
+                        setLoginSuccess(1);
+                    }
+                }).catch((error) => {alert(error)})
+            }
         }
 
-        const registerUserHandler = () => {
+        const registerUserHandler = async(e) => {
             firstname === "" ? setCNameforFName("blockClass" ) : setCNameforFName("noneClass");
             lastname === "" ? setCNameforLName("blockClass") : setCNameforLName("noneClass");
             email === "" ? setCNameforEmail("blockClass") : setCNameforEmail("noneClass");
             regPassword === "" ? setCNameforRegPassword("blockClass") : setCNameforRegPassword("noneClass");
             contact === "" ? setCNameforContact("blockClass") : setCNameforContact("noneClass");
+            
+            if(firstname!="" && firstname!=null && 
+            lastname!="" && lastname!=null && 
+            email!="" && email!=null && 
+            regPassword!="" && regPassword!=null && 
+            contact!="" && contact!=null)
+            {
+                let registerData = JSON.stringify({
+                    email_address:email,
+                    first_name : firstname,
+                    last_name : lastname,  
+                    mobile_number : contact,
+                    password : regPassword
+                })
+                console.log(registerData);
+                e.preventDefault();
+                fetch(props.baseUrl+"signup",{
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            },
+                        body: registerData}).then((response) => response.json()).then((data) => {
+                        if(!data.message){
+                            setRegisterSuccess(2);
+                            //console.log(data.message);
+                        }else{
+                            setRegisterSuccess(1);
+                            console.log(data.message);
+                        }
+                    }).catch((error) =>{
+                        alert(error);
+                    })
+            }        
         }
 
         return(
@@ -135,12 +206,14 @@ const Header = (props) =>{
                 
                 {
                     (sessionLogged==false && props.isDetailsPage==="true") ?
-                    <Button className="headerButton" variant="contained" color="primary" onClick={() => setOpen(!loginModelState)}>Book Show</Button> : ""
+                        <Button className="headerButton" variant="contained" color="primary" onClick={() => setOpen(!loginModelState)}>Book Show</Button>  : ""
                 }
 
                 {
                     (sessionLogged==true && props.isDetailsPage==="true") ?
-                    <Button className="headerButton" variant="contained" color="primary" onClick={() => directToBookShowPage(props.id)}>Book Show</Button> : ""
+                    <Link to={"/bookshow/"+props.id}>
+                        <Button className="headerButton" variant="contained" color="primary">Book Show</Button>
+                    </Link> : ""
                 }
 
                 <Modal isOpen={loginModelState} className="modal" onRequestClose={closePopupModalHandler} ariaHideApp={false}>
@@ -156,15 +229,18 @@ const Header = (props) =>{
                         <FormHelperText className={unameReq}>required</FormHelperText>
                     </FormControl>
                     <br/>
-                    
+                    <form>
                     <FormControl className="formC" required>
-                        <InputLabel htmlFor="password">Password</InputLabel>
-                        <Input id="password" type="password" password={password} onChange={passwordChangeHandler}/>
+                        <InputLabel htmlFor="logpassword">Password</InputLabel>
+                        <Input autoComplete="off" id="logpassword" type="password" logpassword={logpassword} onChange={passwordChangeHandler}/>
                         <FormHelperText className={passwordReq}>required</FormHelperText>
-                    </FormControl>
+                    </FormControl></form>
                     <br/>
                     <br/>
-
+                    {loginSuccess==1 ? 
+                        <Typography className="logRegMessage">Unsuccessful Login Attempt</Typography>
+                        :""
+                    }
                     <Button className="modalButton" color="primary" variant="contained" onClick={loginAuthenticationHandler}>Login</Button>
                     </TabPanel>
 
@@ -187,12 +263,13 @@ const Header = (props) =>{
                         <FormHelperText className={emailReq}>required</FormHelperText>
                     </FormControl>
                     <br/>
+                    <form>
                     <FormControl className="formC" required>
                         <InputLabel htmlFor="regPassword">Password</InputLabel>
-                        <Input id="regPassword" type="password" regpassword={regPassword} onChange={regPasswordHandler}/>
+                        <Input autoComplete="off" id="regPassword" type="password" regpassword={regPassword} onChange={regPasswordHandler}/>
                         <FormHelperText className={regPasswordReq}>required</FormHelperText>
                     </FormControl>
-                    <br/>
+                    <br/></form>
                     <FormControl className="formC" required>
                         <InputLabel htmlFor="contact">Contact No.</InputLabel>
                         <Input id="contact" type="text" contact={contact} onChange={contactHandler}/>
@@ -200,6 +277,10 @@ const Header = (props) =>{
                     </FormControl>
                     <br/>
                     <br/>
+                    {registerSuccess==2 ? 
+                        <Typography className="logRegMessage">Registration Successful. Please Login!</Typography>
+                        :""
+                    }
                     <Button className="modalButton" color="primary" variant="contained" onClick={registerUserHandler}>REGISTER</Button>
                     
                     </TabPanel>
