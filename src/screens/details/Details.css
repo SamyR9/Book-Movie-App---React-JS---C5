@@ -1,0 +1,42 @@
+.backToHome{
+    margin-left: 24px;
+    margin-top: 8px;
+    margin-bottom: 0px;
+    height: 24px;
+    cursor: pointer;
+}
+
+.backLink{
+    text-decoration: none;
+    box-shadow: none;
+    color: black;
+}
+
+.flex-container{
+    display: flex;
+}
+
+.left-container1{
+    width: 20%;
+}
+
+.middle-container{
+    width: 60%;
+}
+
+.right-container1{
+    width: 20%;
+}
+
+.tagStyle{
+    font-weight: bold;
+}
+
+.marginStyle{
+    margin-top: 16px;
+}
+
+.marginStyle1{
+    margin-top: 16px;
+    margin-bottom: 16px;
+}

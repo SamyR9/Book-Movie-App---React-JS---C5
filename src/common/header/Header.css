@@ -1,0 +1,62 @@
+.header{
+    background-color: #222;
+    height: 36px;
+    padding: 8px 32px 8px 16px;
+}
+
+.app-logo{
+    background-color: #ff7f7f;
+    height: 35px;
+    float: left;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .app-logo {
+      animation: app-logo-rotate infinite 8s linear;
+    }
+  }
+
+@keyframes app-logo-rotate {
+    from {
+        transform: rotateY(0deg);
+    }
+    to {
+        transform: rotateY(360deg);
+    }
+}
+
+.headerButton{
+    float: right;
+}
+
+.modal{
+    position: absolute;
+    top: 22%;
+    left: 42%;
+    right: auto;
+    bottom: auto;
+    margin-top: -50px;
+    margin-left: -50px;
+    background-color: white;
+    padding: 20px;
+}
+
+.formC{
+    align-items: center;
+    left: 25%;
+    margin-bottom: 20px !important;
+}
+
+.modalButton{
+    left: 38%;
+}
+
+.blockClass{
+    display: block;
+    color: red !important;
+    margin-right: auto !important;
+}
+
+.noneClass{
+    display: none;
+}

@@ -1,0 +1,43 @@
+.upMovHeader{
+    background-color: #ff9999;
+    text-align: center;
+    padding: 8px 8px 8px 8px;
+    font-size: 1rem;
+}
+
+.mov-poster {
+    height: 100%;
+    width: auto;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: grey;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: grey;
+}
+
+.flex-container {
+    display: flex;
+}
+
+.left-container {
+    width: 76%;
+    margin: 16px;
+}
+
+.right-container {
+    width: 24%;
+    margin: 16px;
+}
