@@ -47,6 +47,8 @@ const Header = (props) =>{
 
         const openPopupModalHandler = () => {
             setOpen(true);
+
+            //clear modal
             setUserName("");
             setPassword("");
             setFirstName("");
@@ -55,6 +57,7 @@ const Header = (props) =>{
             setRegPassword("");
             setContact("");
 
+            //clear required for new modal 
             setCNameForUname("noneClass");
             setCNameforPassword("noneClass");
             setCNameforFName("noneClass");
@@ -70,6 +73,8 @@ const Header = (props) =>{
 
         const closePopupModalHandler = () => {
             setOpen(false);
+
+            //clear modal after close
             setUserName("");
             setPassword("");
             setFirstName("");
@@ -120,6 +125,7 @@ const Header = (props) =>{
             setContact( e.target.value);
         }
 
+        //Login
         const loginAuthenticationHandler = (e) => {
             let dataLog = null;
             
@@ -155,6 +161,7 @@ const Header = (props) =>{
             }
         }
 
+        //Register
         const registerUserHandler = async(e) => {
             firstname === "" ? setCNameforFName("blockClass" ) : setCNameforFName("noneClass");
             lastname === "" ? setCNameforLName("blockClass") : setCNameforLName("noneClass");

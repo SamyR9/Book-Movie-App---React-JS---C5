@@ -9,13 +9,14 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 const Details = (props) => {
 
     let dataMovie = null;
-    const [rating,setRating] = useState(0);
+    const [rating,setRating] = useState(0); //for star border icon
     
     const [selectedMovie,setSelectedMovie] = useState({
         genres: [],
         trailer_url : "",
     });
 
+    //fetch movie data on click of released movie card
     function loadSelectedMovieData(){
         fetch(props.baseUrl + "movies/" + props.match.params.id , {
             method: "GET",
@@ -35,6 +36,7 @@ const Details = (props) => {
         loadSelectedMovieData();
     },[]);
 
+    //youtube parameters
     const opts = {
         height: '350',
         width: '740',
@@ -44,23 +46,32 @@ const Details = (props) => {
         },
       };
 
+    //open wikipedia for selected artist
     const directToArtistWikiHandler = (url) => {
         window.location = url;
     }
 
     return(
         <div>
+            {/* Header */}
             <Header isDetailsPage="true" id={selectedMovie.id} baseUrl={props.baseUrl}/>
+            
+            {/* Back to home link */}
             <div className="backToHome">
                 <Typography className="backToHome" >
                     <Link to="/" underline="hover" className="backLink">&lt; Back to Home</Link>
                 </Typography>
             </div>
 
+            {/* flex container - page divided 20-60-20 */}
             <div className="flex-container">
+
+                {/* 20% left - selected movie img*/}
                 <div className="left-container1">
                     <img src={selectedMovie.poster_url} title={selectedMovie.title}/>
                 </div>
+
+                {/* 60% middle - movie details and trailer */}
 
                 <div className="middle-container">
                     {/* h5 corresponds to headline as per new mapping for installed package */}
@@ -93,6 +104,7 @@ const Details = (props) => {
                     </div>
                 </div>
 
+                {/* 20% right - rating and artist details */}
                 <div className="right-container1">
                     <Typography>
                         <span className="tagStyle">Rate this movie: </span>

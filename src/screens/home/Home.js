@@ -66,6 +66,8 @@ const Home = (props) => {
     let dataArtistsPicklist = null;
     let dataFilterBox = null;
 
+    //Handlers
+
     const filterMovieNameHandler = event => {
         setFilterMovie(event.target.value);
     }
@@ -90,6 +92,7 @@ const Home = (props) => {
         props.history.push('/movie/' + movieId);
     }
     
+    //load movies data
     function loadMoviesData(){
         //upcoming movies get request 
         fetch(props.baseUrl+ "movies?status=PUBLISHED", {
@@ -117,6 +120,7 @@ const Home = (props) => {
         });
     }
 
+    // get genres data
     function loadGenres(){
         fetch(props.baseUrl + "genres", {
             method: "GET" ,
@@ -132,6 +136,7 @@ const Home = (props) => {
         });
     }
 
+    //get artist data
     function loadArtists(){
 
         fetch(props.baseUrl + "artists", {
@@ -149,6 +154,7 @@ const Home = (props) => {
 
     }
 
+    // all functions called 
     useLayoutEffect(() => {
         loadMoviesData();
         loadGenres();
@@ -156,6 +162,7 @@ const Home = (props) => {
         //console.log(movies)
     },[])
 
+    //get data for selected filters
     function loadFilters(query){
         fetch(props.baseUrl +"movies" + encodeURI(query),{
             method: "GET",
@@ -169,6 +176,7 @@ const Home = (props) => {
             setReleasedMoviesList(response.movies)});
     }
 
+    //build filter query
     const applyFilterButtonHandler = () => {
         let query = "?status=RELEASED";
         if (movieName !== "") {
@@ -192,6 +200,7 @@ const Home = (props) => {
     return(
         <div>
             
+            {/* header */}
             <Header baseUrl={props.baseUrl}/>  
             <div className="upMovHeader">Upcoming Movies</div>
             
@@ -222,6 +231,7 @@ const Home = (props) => {
                     </GridList>
                 </div>
 
+                {/* Filter box */}
                 <div className="right-container">
                     <Card>
                         <CardContent>
