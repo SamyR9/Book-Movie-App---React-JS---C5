@@ -4,27 +4,13 @@ import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import Header from "../../common/header/Header"
 import "./Details.css";
-import Rating from "@material-ui/lab/Rating";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
-
-const useStyles = theme => ({
-    root: {
-      display: "flex",
-      flexDirection: "column",
-  
-      "& > * + *": {
-        //marginTop: theme.spacing(1)
-      }
-    },
-    emptyStar: {
-      color: "white"
-    }
-  });
 
 const Details = (props) => {
 
     let dataMovie = null;
-
+    const [rating,setRating] = useState(0);
+    
     const [selectedMovie,setSelectedMovie] = useState({
         genres: [],
         trailer_url : "",
@@ -61,14 +47,12 @@ const Details = (props) => {
     const directToArtistWikiHandler = (url) => {
         window.location = url;
     }
-      
-    const classes = useStyles();
 
     return(
         <div>
             <Header isDetailsPage="true" id={selectedMovie.id} baseUrl={props.baseUrl}/>
             <div className="backToHome">
-                <Typography>
+                <Typography className="backToHome" >
                     <Link to="/" underline="hover" className="backLink">&lt; Back to Home</Link>
                 </Typography>
             </div>
@@ -79,11 +63,11 @@ const Details = (props) => {
                 </div>
 
                 <div className="middle-container">
-                    
+                    {/* h5 corresponds to headline as per new mapping for installed package */}
                     <Typography variant="h5" component="h2">{selectedMovie.title} </Typography>
                     <br/>
                     <Typography>
-                        <span className="tagStyle">Genres: </span> {selectedMovie.genres.join(",")}
+                        <span className="tagStyle">Genre: </span> {selectedMovie.genres.join(", ")}
                     </Typography>
                     <Typography>
                         <span className="tagStyle">Duration:</span> {selectedMovie.duration} 
@@ -92,7 +76,7 @@ const Details = (props) => {
                         <span className="tagStyle">Release Date:</span> {new Date(selectedMovie.release_date).toDateString()} 
                     </Typography>
                     <Typography>
-                        <span className="tagStyle"> Rating:</span> {selectedMovie.rating}  
+                        <span className="tagStyle">Rating:</span> {selectedMovie.rating}  
                     </Typography>
                     <div className="marginStyle">
                         <Typography>
@@ -113,19 +97,15 @@ const Details = (props) => {
                     <Typography>
                         <span className="tagStyle">Rate this movie: </span>
                     </Typography>
-
-                    <div className={classes.root}>
-                        <Rating
-                        name="rating"
-                        defaultValue={0}
-                        precision={1}
-                        onChange={(_, value) => {
-                            setRating(value);
-                          }}
-                        emptyIcon={<StarBorderIcon fontSize="inherit" style={{pointerEvents: 'none'}} />}
-                        />
+                    <div>
+                    {[...Array(5)].map((star, index) => { 
+                         index += 1;      
+                            return (         
+                            <StarBorderIcon key={index} className={index <= rating ? "colorStar" : "colorStarB"}
+                            onClick={() => setRating(index)}/>        
+                            );
+                        })}
                     </div>
-
                     <div className="marginStyle1">
                         <Typography>
                             <span className="tagStyle">Artists:</span>
@@ -150,4 +130,4 @@ const Details = (props) => {
     )
 }
 
-export default withStyles(useStyles)(Details);
+export default Details;

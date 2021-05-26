@@ -12,8 +12,17 @@
     color: black;
 }
 
+.colorStar{
+    color: yellow;
+}
+.colorStarB{
+    color: black;
+}
+
 .flex-container{
     display: flex;
+    margin-left: 24px;
+    margin-right: 24px;
 }
 
 .left-container1{

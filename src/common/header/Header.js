@@ -90,6 +90,8 @@ const Header = (props) =>{
             setRegisterSuccess(0);
         }
 
+        // Handlers
+
         const  userNameHandler = (e) => {
             setUserName( e.target.value);
         }
@@ -125,7 +127,7 @@ const Header = (props) =>{
             //console.log(unameReq)
             logpassword === "" ? setCNameforPassword("blockClass") : setCNameforPassword("noneClass");
 
-            if(username!=null && username!="" && logpassword!=null && logpassword!=""){
+            if(username!==null && username!=="" && logpassword!==null && logpassword!==""){
                 e.preventDefault();
                 //const loginParameters = window.btoa(username + ":" + password);
                 //console.log(window.btoa(logpassword))
@@ -160,11 +162,11 @@ const Header = (props) =>{
             regPassword === "" ? setCNameforRegPassword("blockClass") : setCNameforRegPassword("noneClass");
             contact === "" ? setCNameforContact("blockClass") : setCNameforContact("noneClass");
             
-            if(firstname!="" && firstname!=null && 
-            lastname!="" && lastname!=null && 
-            email!="" && email!=null && 
-            regPassword!="" && regPassword!=null && 
-            contact!="" && contact!=null)
+            if(firstname!=="" && firstname!==null && 
+            lastname!=="" && lastname!==null && 
+            email!=="" && email!==null && 
+            regPassword!=="" && regPassword!==null && 
+            contact!=="" && contact!==null)
             {
                 let registerData = JSON.stringify({
                     email_address:email,
@@ -197,16 +199,18 @@ const Header = (props) =>{
         return(
             <div className="header">
                 <img src={logo} alt="logo" className="app-logo"/>
+                {/* session logged - value based on access token to tell user state */}
                 {(sessionLogged===false) ? 
-                    <Button className="headerButton" variant="contained" onClick={openPopupModalHandler}>Login</Button>
-                   : <Button className="headerButton" variant="contained" onClick={logoutSessionHandler}>Logout</Button>
+                    <Button className="headerButton" color="default" variant="contained" onClick={openPopupModalHandler}>Login</Button>
+                   : <Button className="headerButton" color="default" variant="contained" onClick={logoutSessionHandler}>Logout</Button>
                 }
                 
+                {/* Book Show button for not logged in user */}
                 {
                     (sessionLogged==false && props.isDetailsPage==="true") ?
                         <Button className="headerButton" variant="contained" color="primary" onClick={() => setOpen(!loginModelState)}>Book Show</Button>  : ""
                 }
-
+                {/* Book show button for logged in user */}
                 {
                     (sessionLogged==true && props.isDetailsPage==="true") ?
                     <Link to={"/bookshow/"+props.id}>
@@ -219,7 +223,8 @@ const Header = (props) =>{
                             <Tab label="LOGIN" />
                             <Tab label="REGISTER" />
                         </Tabs>
-
+                        
+                    {/* Login Form */}
                     <TabPanel value={value} index={0}>
                     <FormControl className="formC" required>
                         <InputLabel htmlFor="username">Username</InputLabel>
@@ -239,9 +244,11 @@ const Header = (props) =>{
                         <Typography className="logRegMessage">Unsuccessful Login Attempt</Typography>
                         :""
                     }
+                    
                     <Button className="modalButton" color="primary" variant="contained" onClick={loginAuthenticationHandler}>Login</Button>
                     </TabPanel>
-
+                    
+                    {/* Register Form */}
                     <TabPanel value={value} index={1}>
                     <FormControl className="formC" required>
                         <InputLabel htmlFor="firstname">First Name</InputLabel>

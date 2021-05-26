@@ -207,7 +207,7 @@ const Home = (props) => {
            
             {/* flex container with left and right divisions */}
             <div className="flex-container">
-
+                {/* Released Movie Cards */}
                 <div className="left-container">
                     <GridList cellHeight={350} cols={4} className={classes.gridListLeftContainer}>
                         {relMovies.map(mov => (
@@ -225,12 +225,11 @@ const Home = (props) => {
                 <div className="right-container">
                     <Card>
                         <CardContent>
-                            <FormControl className={classes.movieFilterCardForm}>
-                                <Typography className={classes.title} color="textSecondary">
-                                    FIND MOVIES BY:
-                                </Typography>
-                            </FormControl>
-
+                            
+                            <Typography className={classes.title} color="textSecondary">
+                                FIND MOVIES BY:
+                            </Typography>
+                           
                             <FormControl className={classes.movieFilterCardForm}>
                                 <InputLabel htmlFor="movieName">Movie Name</InputLabel>
                                 <Input id="movieName" onChange={filterMovieNameHandler}/>
@@ -278,9 +277,7 @@ const Home = (props) => {
                             <br/>
                             <br/>
                             <FormControl className={classes.movieFilterCardForm}>
-                                <Button onClick={() =>applyFilterButtonHandler()} variant="contained" color="primary">
-                                    APPLY
-                                </Button>
+                                <Button onClick={() =>applyFilterButtonHandler()} variant="contained" color="primary">APPLY</Button>
                             </FormControl>
                         </CardContent>
                     </Card>
